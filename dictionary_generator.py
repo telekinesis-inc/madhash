@@ -10,7 +10,7 @@ from nltk.corpus import wordnet as wn
 nltk.download('brown')
 tagged_words = nltk.corpus.brown.tagged_words()
 
-with open('offensive.txt', 'r') as f:
+with open('denylist.txt', 'r') as f:
     profanity = set(x.lower() for x in f.read().split('\n'))
 
 value_counts = pd.Series((w.lower(), t) for w, t in tagged_words 
