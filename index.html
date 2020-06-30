@@ -1,0 +1,88 @@
+<html>
+<head>
+  <meta charset="UTF-8"/>
+   <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css"> 
+</head>
+<body style="color: #222; text-align: center;">
+  <div class='w3-container' style="max-width: 100vh;margin: auto;">
+    <caption>
+      <h2 style="text-align: center;">
+        MADHASH
+      </h2>
+      <h1>FUNNY</h1>
+      <h1>HUMAN-MEMORABLE</h1>
+      <h1>SHA-256 FINGERPRINTS</h1>
+    </caption>
+    <form class="w3-card w3-container w3-center"
+          style="padding: 2vh; margin: 10vh 0 5vh 0;">
+
+      <input class="w3-input" type="text" name="input"> 
+      <label class="w3-label">Input</label>
+
+      <input class="w3-input" type="text" name="sha"> 
+      <label class="w3-label">SHA-256</label>
+
+      <textarea name="madhash" cols="10" rows="4" class='w3-input' style="color: #444" readonly></textarea>
+      <label class="w3-label">MadHash</label>
+
+    </form>
+    <p>
+      Please add any offensive words you find to the <a href="https://github.com/e-neuman/madhash/blob/master/offensive.txt">
+        profanity blacklist</a>.
+    </p>
+  </div>
+  <div class="w3-footer">
+    <p>
+      <a href="https://githib.com/e-neuman/telekinesis">Github repo</ref>
+    </p>
+    <p>
+      <a href="https://telekinesis.cloud">Telekinesis.Cloud</ref>
+    </p>
+  </div>
+  
+  <script src="madhash.js"></script> 
+  <script>
+
+    const SENTENCE = "JNRVJN".split("")
+    let dictionary = {}
+    let inp = null
+    let sha = null
+    let mad = null
+
+    function ready() {
+        inp = document.getElementsByName('input')[0]
+        sha = document.getElementsByName('sha')[0]
+        mad = document.getElementsByName('madhash')[0]
+
+        inp.oninput = e => updateHash(e.target.value)
+        sha.oninput = e => {
+            inp.value = ""
+            updateMad(e.target.value)
+        }
+
+        fetch('https://madhash.s3.amazonaws.com/dictionary.json').then(resp => resp.json())
+                                                                 .then(data => {
+            dictionary = data
+            updateHash(inp.value)
+        })
+    }
+    function updateHash(value) {
+        if (sha) {
+            sha256(value).then(bytes => {
+                x = hexString(bytes)
+                sha.value = x
+                updateMad(x)
+            })
+        }
+    }
+
+    function updateMad(hex) {
+        if (mad) {
+            mad.value = madhash(bytesString(hexToArray(hex)), SENTENCE, dictionary)
+        }
+    }
+    ready()
+
+  </script>
+</body>
+</html>
