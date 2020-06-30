@@ -55,5 +55,5 @@ exp_map = {
 
 out = {t: sorted(list(df_clean[df_clean.max_type == t].head(2**exp_map[t]).index)) for t in exp_map}
 
-with open('dictionary.json', 'w') as f:
+with open('public/dictionary.json', 'w') as f:
     json.dump(out, f)
